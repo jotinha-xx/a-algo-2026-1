@@ -1,1 +1,34 @@
-Pasta destinada aos deveres da disciplina.
+import random
+import time
+
+def insertion_sort(lista):
+    for i in range(1, len(lista)):
+        chave = lista[i]
+        j = i - 1
+        
+        while j >= 0 and lista[j] > chave:
+            lista[j + 1] = lista[j]
+            j -= 1
+        
+        lista[j + 1] = chave
+
+tamanhos = [1000, 5000, 10000, 20000, 50000]
+
+for n in tamanhos:
+    print(f"\nTestando n = {n}")
+    
+    lista_original = [random.randint(0, 100000) for _ in range(n)]
+    
+    # Insertion Sort
+    lista1 = lista_original.copy()
+    inicio = time.time()
+    insertion_sort(lista1)
+    fim = time.time()
+    print(f"Insertion Sort: {fim - inicio:.6f} segundos")
+    
+    # Timsort (sorted)
+    lista2 = lista_original.copy()
+    inicio = time.time()
+    sorted(lista2)
+    fim = time.time()
+    print(f"sorted() (Timsort): {fim - inicio:.6f} segundos")
