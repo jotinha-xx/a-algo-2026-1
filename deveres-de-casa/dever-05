@@ -1,0 +1,85 @@
+import math
+
+def format_n(power):
+    """Formata o termo 'n^x' de maneira limpa."""
+    if abs(power) < 1e-9: 
+        return "1"
+    if abs(power - 1) < 1e-9: 
+        return "n"
+    
+    # Exibe como inteiro se não tiver casas decimais (ex: 2.0 -> 2)
+    power_str = int(power) if float(power).is_integer() else f"{power:.2f}"
+    return f"n^{power_str}"
+
+def format_log(power):
+    """Formata o termo 'log^x(n)' de maneira limpa."""
+    if abs(power) < 1e-9: 
+        return ""
+    if abs(power - 1) < 1e-9: 
+        return "log(n)"
+    
+    power_str = int(power) if float(power).is_integer() else f"{power:.2f}"
+    return f"log^{power_str}(n)"
+
+def teorema_mestre(a, b, k, p):
+    # Validações dos parâmetros
+    if a < 1:
+        return "Erro: 'a' deve ser maior ou igual a 1."
+    if b <= 1:
+        return "Erro: 'b' deve ser estritamente maior que 1."
+    if k < 0 or p < 0:
+        return "Erro: 'k' e 'p' não devem ser negativos nesta implementação."
+
+    # Calcula o logaritmo c = log_b(a)
+    c = math.log(a, b)
+    epsilon = 1e-9 # Tolerância para erros de ponto flutuante
+    
+    print(f"\nAnalisando: T(n) = {a}T(n/{b}) + Θ({format_n(k)}{'*' if (k>0 and p>0) else ''}{format_log(p)})")
+    print(f"Logaritmo crítico (c = log_b(a)): {c:.4f}")
+
+    # Caso 1: k < c (trabalho das folhas domina)
+    if c > k + epsilon:
+        return f"Caso 1 aplicado -> Complexidade: Θ({format_n(c)})"
+
+    # Caso 2: k == c (trabalho distribuído igualmente)
+    elif abs(c - k) <= epsilon:
+        termo_n = format_n(c)
+        termo_log = format_log(p + 1)
+        
+        # Ajusta a formatação caso termo_n seja "1" (ex: n^0)
+        if termo_n == "1":
+            return f"Caso 2 aplicado -> Complexidade: Θ({termo_log})"
+        return f"Caso 2 aplicado -> Complexidade: Θ({termo_n} * {termo_log})"
+
+    # Caso 3: k > c (trabalho da raiz domina)
+    else:
+        termo_n = format_n(k)
+        termo_log = format_log(p)
+        
+        if termo_n == "1" and termo_log:
+            return f"Caso 3 aplicado -> Complexidade: Θ({termo_log})"
+        elif termo_log:
+            return f"Caso 3 aplicado -> Complexidade: Θ({termo_n} * {termo_log})"
+        return f"Caso 3 aplicado -> Complexidade: Θ({termo_n})"
+
+
+# ==========================================
+# Execução Principal e Interação com o Usuário
+# ==========================================
+if __name__ == "__main__":
+    print("--- Calculadora do Teorema Mestre ---")
+    print("Formato esperado: T(n) = aT(n/b) + Θ(n^k * log^p(n))")
+    
+    try:
+        a = float(input("Digite o valor de 'a' (número de subproblemas, a >= 1): "))
+        b = float(input("Digite o valor de 'b' (fator de redução, b > 1): "))
+        k = float(input("Digite o valor de 'k' (expoente de n em f(n), k >= 0): "))
+        p = float(input("Digite o valor de 'p' (expoente de log(n) em f(n), p >= 0): "))
+        
+        resultado = teorema_mestre(a, b, k, p)
+        print("\n" + "="*40)
+        print(resultado)
+        print("="*40)
+        
+    except ValueError:
+        print("Entrada inválida! Por favor, digite valores numéricos.")
