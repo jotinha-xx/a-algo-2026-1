@@ -1,0 +1,27 @@
+def calcular_f(n):
+    # Caso base: F(1) = 2
+    if n == 1:
+        return 2
+    
+    # Chamada recursiva: F(n) = 2 * F(n-1) + n^2
+    return 2 * calcular_f(n - 1) + n**2
+
+# ==========================================
+# Execução Principal e Interação com o Usuário
+# ==========================================
+if __name__ == "__main__":
+    try:
+        # Solicita o valor de n ao usuário
+        n_str = input("Digite o valor de n (inteiro maior ou igual a 1): ")
+        n = int(n_str)
+        
+        # Valida se o input está dentro do domínio esperado
+        if n < 1:
+            print("O valor de n deve ser maior ou igual a 1 para esta função.")
+        else:
+            # Calcula e exibe o resultado
+            resultado = calcular_f(n)
+            print(f"O resultado de F({n}) é: {resultado}")
+            
+    except ValueError:
+        print("Entrada inválida! Por favor, certifique-se de digitar um número inteiro.")
