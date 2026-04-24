@@ -1,0 +1,30 @@
+def is_palindrome(arr, inicio=0, fim=None):
+    # Inicializa o ponteiro de 'fim' na primeira chamada
+    if fim is None:
+        fim = len(arr) - 1
+        
+    # Caso base 1: Se os ponteiros se cruzaram ou são iguais, é palíndromo
+    if inicio >= fim:
+        return True
+        
+    # Caso base 2: Se os elementos nas pontas forem diferentes, não é palíndromo
+    if arr[inicio] != arr[fim]:
+        return False
+        
+    # Chamada recursiva: move os ponteiros para o centro
+    return is_palindrome(arr, inicio + 1, fim - 1)
+
+
+# ==========================================
+# Testando os exemplos solicitados
+# ==========================================
+if __name__ == "__main__":
+    array1 = [0, 1, 2, 3, 2, 1, 0]
+    array2 = ["a", "b", "b", "a"]
+    array3 = ["a", "b", "c", "b", "a"]
+    array4 = ["a", "b", "c", "f", "b", "a"]
+
+    print(f"array1: {is_palindrome(array1)}") # Saída: True
+    print(f"array2: {is_palindrome(array2)}") # Saída: True
+    print(f"array3: {is_palindrome(array3)}") # Saída: True
+    print(f"array4: {is_palindrome(array4)}") # Saída: False
